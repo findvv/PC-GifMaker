@@ -1,4 +1,4 @@
-reactjs框架制作
+运用reactjs框架制作
 
 1.npm install下载所有的依赖
 

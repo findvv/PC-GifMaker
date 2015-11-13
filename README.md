@@ -7,3 +7,4 @@
 3.运行环境：（1）gulp（2）打开index.html看静态页面效果
 
 
+![ABC](http://i0.itc.cn/20151113/35cf_9ba18354_dd3e_591d_70fe_2bcfc4054c53_1.gif) 

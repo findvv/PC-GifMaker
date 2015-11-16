@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var utility = require('utility');
 var UploadBtn = require('./components/uploadBtn.js');
 var InputNumBtn = require('./components/inputNumBtn.js');
 var ImgArea= require('./components/imgArea.js');
@@ -21,7 +22,8 @@ var MainArea = React.createClass({
       originWidth:0,
       positionX:0,
       imgNum:0,
-      speed:0
+      speed:0,
+      code:''
     }
     return states;
   },
@@ -73,15 +75,26 @@ var MainArea = React.createClass({
     });
     this.beginAnimate(num,gap);
   },
-  makeCss:function(gap){
+  makeCss:function(){
+    var now = (new Date().getTime() + '').substr(-6);
+    var timeMd5 = utility.md5(now).substr(-6);
     window.clearInterval(animageIntervel);
+    var result = this.state;
+    var num = result.imgNum;
+    var allCode = '.imgTest{width:'+result.imgWidth+'px;height:'+result.imgHeight+'px;-webkit-animation-name: '+timeMd5+';-webkit-animation-iteration-count:infinite;-webkit-animation-timing-function:step-start;-webkit-animation-duration: '+(result.speed*num)+'ms;animation-name: '+timeMd5+';animation-iteration-count:infinite;animation-timing-function:step-start;animation-duration: '+(result.speed*num)+'ms;}';
+    var strings = '';
+    for (var i=0;i<num;i++){
+      strings += ( 100/num * i + '% {background-position: ' + (-result.originWidth/num * i) + 'px 0;}');
+    }
+    strings += '100% {background-position: 0 0;}';
+    var newStrings = '@-webkit-keyframes '+timeMd5+'{'+strings+'}'+'@keyframes '+timeMd5+'{'+strings+'}';
     this.setState({
       showSpeed:false,
       showImg:false,
       showResult:true,
-      info:'第四步--生成CSS代码'
+      info:'第四步--生成CSS代码',
+      code:(allCode+newStrings)
     });
-    var num = this.state.imgNum;
   },
   render:function(){
     return(
@@ -91,7 +104,7 @@ var MainArea = React.createClass({
         <UploadBtn imgChange={this.imgChange} btnStyle={this.state.showUploadBtn} />
         <InputNumBtn btnStyle={this.state.showNumBtn} numChange={this.numChange} />
         <InputSpeed btnStyle={this.state.showSpeed} changeSpeed={this.resetInterval} speed={this.state.speed} makeCss={this.makeCss} />
-        <ResultArea result={this.state} />   
+        <ResultArea result={this.state.code} showResult={this.state.showResult}/>   
       </div>
     )
   }

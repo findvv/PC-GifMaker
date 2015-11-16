@@ -77,7 +77,7 @@ var MainArea = React.createClass({
   },
   makeCss:function(){
     var now = (new Date().getTime() + '').substr(-6);
-    var timeMd5 = utility.md5(now).substr(-6);
+    var timeMd5 = 'a'+utility.md5(now).substr(-6);
     window.clearInterval(animageIntervel);
     var result = this.state;
     var num = result.imgNum;
